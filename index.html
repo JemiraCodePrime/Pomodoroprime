@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProductivityHub - Vos Outils Quotidiens</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main-container">
+      <!-- Navigation par onglets -->
+      <nav class="tab-navigation">
+        <button class="tab-btn active" data-tab="todo">To-Do List</button>
+        <button class="tab-btn" data-tab="pomodoro">Pomodoro</button>
+        <button class="tab-btn" data-tab="calculator">Calculatrice</button>
+      </nav>
+
+      <!-- ========== TO-DO LIST ========== -->
+      <div class="tab-content active" id="todo">
+        <div class="container">
+          <header>
+            <h1>Mes Tâches</h1>
+            <p class="subtitle">Organisez votre journée simplement</p>
+          </header>
+
+          <div class="input-section">
+            <input
+              type="text"
+              id="taskInput"
+              placeholder="Ajouter une nouvelle tâche..."
+              maxlength="100"
+            />
+            <button id="addBtn" class="add-btn"><span>+</span> Ajouter</button>
+          </div>
+
+          <div class="task-counter">
+            <span id="taskCount">0 tâche</span>
+          </div>
+
+          <ul id="taskList" class="task-list"></ul>
+
+          <div id="emptyState" class="empty-state">
+            <p>Aucune tâche pour le moment</p>
+            <p class="empty-subtitle">Ajoutez votre première tâche ci-dessus</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== POMODORO ========== -->
+      <div class="tab-content" id="pomodoro">
+        <div class="container">
+          <header>
+            <h1>Chronomètre Pomodoro</h1>
+            <p class="subtitle">Technique de gestion du temps</p>
+          </header>
+
+          <div class="pomodoro-container">
+            <div class="timer-display">
+              <div class="timer-circle">
+                <svg class="progress-ring" width="280" height="280">
+                  <circle class="progress-ring-bg" cx="140" cy="140" r="120" />
+                  <circle
+                    class="progress-ring-circle"
+                    cx="140"
+                    cy="140"
+                    r="120"
+                  />
+                </svg>
+                <div class="timer-text">
+                  <span id="timerDisplay">25:00</span>
+                  <span id="timerMode" class="timer-mode">Travail</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button id="startBtn" class="timer-btn primary">
+                ▶️ Démarrer
+              </button>
+              <button id="pauseBtn" class="timer-btn" disabled>⏸️ Pause</button>
+              <button id="resetBtn" class="timer-btn">🔄 Réinitialiser</button>
+            </div>
+
+            <div class="timer-presets">
+              <button
+                class="preset-btn active"
+                data-minutes="25"
+                data-mode="work"
+              >
+                Travail (25min)
+              </button>
+              <button class="preset-btn" data-minutes="5" data-mode="break">
+                Pause (5min)
+              </button>
+              <button class="preset-btn" data-minutes="15" data-mode="break">
+                Grande pause (15min)
+              </button>
+            </div>
+
+            <div class="session-counter">
+              <p>Sessions complétées : <span id="sessionCount">0</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== CALCULATRICE ========== -->
+      <div class="tab-content" id="calculator">
+        <div class="container calc-container">
+          <header>
+            <h1>Calculatrice</h1>
+            <p class="subtitle">Effectuez vos calculs rapidement</p>
+          </header>
+
+          <div class="calculator">
+            <div class="calc-display">
+              <div class="calc-previous" id="calcPrevious"></div>
+              <div class="calc-current" id="calcCurrent">0</div>
+            </div>
+
+            <div class="calc-buttons">
+              <button class="calc-btn function" data-action="clear">C</button>
+              <button class="calc-btn function" data-action="delete">⌫</button>
+              <button class="calc-btn function" data-action="percent">%</button>
+              <button class="calc-btn operator" data-action="divide">÷</button>
+
+              <button class="calc-btn number" data-number="7">7</button>
+              <button class="calc-btn number" data-number="8">8</button>
+              <button class="calc-btn number" data-number="9">9</button>
+              <button class="calc-btn operator" data-action="multiply">
+                ×
+              </button>
+
+              <button class="calc-btn number" data-number="4">4</button>
+              <button class="calc-btn number" data-number="5">5</button>
+              <button class="calc-btn number" data-number="6">6</button>
+              <button class="calc-btn operator" data-action="subtract">
+                −
+              </button>
+
+              <button class="calc-btn number" data-number="1">1</button>
+              <button class="calc-btn number" data-number="2">2</button>
+              <button class="calc-btn number" data-number="3">3</button>
+              <button class="calc-btn operator" data-action="add">+</button>
+
+              <button class="calc-btn number span-2" data-number="0">0</button>
+              <button class="calc-btn number" data-action="decimal">.</button>
+              <button class="calc-btn operator equals" data-action="equals">
+                =
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

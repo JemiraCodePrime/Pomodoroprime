@@ -1,0 +1,731 @@
+/* ========================================
+   VARIABLES CSS (Custom Properties)
+   ======================================== */
+/* Définition des couleurs et styles réutilisables dans tout le projet */
+:root {
+  --bg: #0f162b;                                  /* Couleur de fond principale (bleu foncé) */
+  --surface: #ffffff;                             /* Couleur des surfaces (blanc) */
+  --muted: #5f6472;                               /* Texte secondaire (gris) */
+  --border: #d7dce8;                              /* Couleur des bordures (gris clair) */
+  --primary: #3f51c6;                             /* Couleur principale (bleu) */
+  --primary-soft: rgba(63, 81, 198, 0.12);        /* Version transparente de la couleur principale */
+  --accent: #16a5c0;                              /* Couleur d'accent (cyan) */
+  --danger: #d84242;                              /* Couleur pour les actions destructives (rouge) */
+  --shadow: 0 18px 40px rgba(10, 15, 35, 0.25);  /* Ombre portée standard */
+}
+
+/* ========================================
+   RESET CSS
+   ======================================== */
+/* Réinitialisation des styles par défaut du navigateur */
+* {
+  box-sizing: border-box;  /* Inclut padding et border dans la largeur totale */
+  margin: 0;               /* Supprime toutes les marges par défaut */
+  padding: 0;              /* Supprime tous les paddings par défaut */
+}
+
+/* ========================================
+   STYLES DE BASE DU BODY
+   ======================================== */
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;  /* Polices modernes et élégantes */
+  min-height: 100vh;       /* Hauteur minimale = hauteur de la fenêtre */
+  padding: 40px 16px;      /* Espacement autour du contenu */
+  color: #1f2430;          /* Couleur du texte par défaut */
+  position: relative;      /* Permet le positionnement des pseudo-éléments */
+  background: transparent; /* Fond transparent pour voir les dégradés */
+  overflow-x: hidden;      /* Empêche le scroll horizontal */
+}
+
+/* ========================================
+   ARRIÈRE-PLAN ANIMÉ DU BODY
+   ======================================== */
+/* Création de deux couches d'arrière-plan avec pseudo-éléments */
+body::before,
+body::after {
+  content: "";             /* Nécessaire pour afficher les pseudo-éléments */
+  position: fixed;         /* Fixé à l'écran (ne bouge pas au scroll) */
+  inset: 0;                /* Couvre tout l'écran (équivalent à top:0 right:0 bottom:0 left:0) */
+  z-index: -2;             /* Placé derrière tout le contenu */
+  pointer-events: none;    /* N'intercepte pas les clics */
+}
+
+/* Première couche : dégradé animé de fond */
+body::before {
+  background: linear-gradient(130deg, #0f162b, #1a2250, #111830, #1d2f52);  /* Dégradé bleu foncé */
+  background-size: 400% 400%;              /* Taille agrandie pour l'animation */
+  animation: gradientFlow 26s ease infinite;  /* Animation fluide et infinie */
+}
+
+/* Deuxième couche : cercles lumineux superposés */
+body::after {
+  z-index: -1;  /* Au-dessus de ::before mais derrière le contenu */
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 50%),      /* Cercle blanc en haut à gauche */
+    radial-gradient(circle at 80% 0%, rgba(63, 81, 198, 0.15), transparent 45%),         /* Cercle bleu en haut à droite */
+    radial-gradient(circle at 50% 80%, rgba(22, 165, 192, 0.18), transparent 50%);       /* Cercle cyan en bas */
+  animation: pulse 18s ease-in-out infinite;  /* Animation de pulsation */
+}
+
+/* ========================================
+   CONTENEUR PRINCIPAL
+   ======================================== */
+.main-container {
+  width: min(1100px, 100%);                /* Largeur max 1100px, sinon 100% de l'écran */
+  margin: 0 auto;                          /* Centré horizontalement */
+  background: rgba(255, 255, 255, 0.95);   /* Blanc légèrement transparent */
+  border-radius: 12px;                     /* Coins arrondis */
+  box-shadow: var(--shadow);               /* Ombre portée */
+  padding: 32px;                           /* Espacement intérieur */
+  border: 1px solid rgba(255, 255, 255, 0.6);  /* Bordure blanche semi-transparente */
+}
+
+/* ========================================
+   NAVIGATION PAR ONGLETS
+   ======================================== */
+.tab-navigation {
+  display: grid;                                      /* Layout en grille */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));  /* Colonnes adaptatives (min 180px) */
+  gap: 12px;                                          /* Espacement entre les onglets */
+  margin-bottom: 28px;                                /* Marge en dessous */
+}
+
+/* Styles des boutons d'onglets */
+.tab-btn {
+  border: 1px solid var(--border);  /* Bordure grise */
+  background: transparent;          /* Fond transparent par défaut */
+  border-radius: 10px;              /* Coins arrondis */
+  padding: 16px 14px;               /* Espacement intérieur */
+  font-size: 15px;                  /* Taille du texte */
+  font-weight: 600;                 /* Texte semi-gras */
+  color: var(--muted);              /* Couleur grise */
+  cursor: pointer;                  /* Curseur en forme de main */
+  transition: all 0.25s ease;       /* Transition fluide de tous les changements */
+  display: flex;                    /* Flexbox pour centrer le contenu */
+  align-items: center;              /* Centrage vertical */
+  justify-content: center;          /* Centrage horizontal */
+  gap: 8px;                         /* Espace entre les éléments internes */
+}
+
+/* Style de l'onglet actif */
+.tab-btn.active {
+  background: var(--primary-soft);                    /* Fond bleu clair */
+  border-color: transparent;                          /* Supprime la bordure */
+  color: var(--primary);                              /* Texte bleu */
+  box-shadow: inset 0 0 0 1px rgba(72, 86, 214, 0.15);  /* Bordure intérieure subtile */
+}
+
+/* ========================================
+   CONTENUS DES ONGLETS
+   ======================================== */
+.tab-content {
+  display: none;                   /* Caché par défaut */
+  animation: fadeIn 0.35s ease;    /* Animation d'apparition */
+}
+
+/* Affichage de l'onglet actif */
+.tab-content.active {
+  display: block;  /* Visible */
+}
+
+/* Conteneur interne de chaque onglet */
+.container {
+  background: var(--surface);  /* Fond blanc */
+  border-radius: 12px;         /* Coins arrondis */
+  border: 1px solid var(--border);  /* Bordure grise */
+  padding: 32px;               /* Espacement intérieur */
+}
+
+/* ========================================
+   EN-TÊTES
+   ======================================== */
+header {
+  text-align: center;      /* Centré */
+  margin-bottom: 28px;     /* Marge en dessous */
+}
+
+header h1 {
+  font-size: 28px;         /* Taille du titre */
+  font-weight: 600;        /* Semi-gras */
+  margin-bottom: 8px;      /* Espace sous le titre */
+}
+
+.subtitle {
+  color: var(--muted);     /* Couleur grise */
+  font-size: 14px;         /* Texte plus petit */
+  letter-spacing: 0.02em;  /* Espacement des lettres */
+}
+
+/* ========================================
+   TO-DO LIST
+   ======================================== */
+
+/* Section de saisie (input + bouton) */
+.input-section {
+  display: flex;           /* Flexbox pour aligner horizontalement */
+  gap: 12px;               /* Espace entre input et bouton */
+  margin-bottom: 24px;     /* Marge en dessous */
+}
+
+/* Champ de saisie des tâches */
+#taskInput {
+  flex: 1;                 /* Prend tout l'espace disponible */
+  padding: 14px 16px;      /* Espacement intérieur */
+  border-radius: 10px;     /* Coins arrondis */
+  border: 1px solid var(--border);  /* Bordure grise */
+  background: #fdfdff;     /* Fond blanc légèrement teinté */
+  font-size: 15px;         /* Taille du texte */
+  color: inherit;          /* Hérite de la couleur du texte */
+  transition: border 0.2s ease, box-shadow 0.2s ease;  /* Transitions fluides */
+}
+
+/* État focus du champ (quand on clique dedans) */
+#taskInput:focus {
+  border-color: var(--primary);       /* Bordure bleue */
+  box-shadow: 0 0 0 3px var(--primary-soft);  /* Halo bleu autour */
+  outline: none;                      /* Supprime l'outline par défaut du navigateur */
+}
+
+/* Bouton "Ajouter" */
+.add-btn {
+  border: none;                    /* Pas de bordure */
+  border-radius: 10px;             /* Coins arrondis */
+  background: var(--primary);      /* Fond bleu */
+  color: #fff;                     /* Texte blanc */
+  font-weight: 600;                /* Semi-gras */
+  padding: 0 20px;                 /* Espacement horizontal */
+  display: inline-flex;            /* Flexbox inline */
+  align-items: center;             /* Centrage vertical */
+  gap: 6px;                        /* Espace entre icône et texte */
+  cursor: pointer;                 /* Curseur en main */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;  /* Transitions */
+  box-shadow: 0 10px 30px rgba(72, 86, 214, 0.25);  /* Ombre bleue */
+}
+
+/* Effet au survol du bouton */
+.add-btn:hover {
+  transform: translateY(-1px);  /* Légère élévation */
+}
+
+/* Compteur de tâches */
+.task-counter {
+  border-radius: 8px;      /* Coins arrondis */
+  background: #f8f9fc;     /* Fond gris très clair */
+  padding: 10px 14px;      /* Espacement intérieur */
+  font-size: 13px;         /* Petit texte */
+  color: var(--muted);     /* Couleur grise */
+  margin-bottom: 16px;     /* Marge en dessous */
+}
+
+/* Liste des tâches */
+.task-list {
+  list-style: none;        /* Supprime les puces */
+  display: flex;           /* Flexbox */
+  flex-direction: column;  /* Colonne verticale */
+  gap: 12px;               /* Espace entre les tâches */
+  max-height: 360px;       /* Hauteur max avant scroll */
+  overflow-y: auto;        /* Scroll vertical si nécessaire */
+  padding-right: 6px;      /* Espace pour la scrollbar */
+}
+
+/* Style d'une tâche individuelle */
+.task-item {
+  border: 1px solid var(--border);  /* Bordure grise */
+  border-radius: 10px;              /* Coins arrondis */
+  padding: 14px 16px;               /* Espacement intérieur */
+  display: flex;                    /* Flexbox */
+  align-items: center;              /* Alignement vertical */
+  justify-content: space-between;   /* Espace entre contenu et bouton */
+  gap: 14px;                        /* Espace entre éléments */
+  transition: border 0.2s ease, background 0.2s ease;  /* Transitions */
+}
+
+/* Effet au survol d'une tâche */
+.task-item:hover {
+  border-color: #c9cfdf;   /* Bordure plus foncée */
+  background: #fafbff;     /* Fond légèrement teinté */
+}
+
+/* Tâche complétée */
+.task-item.completed {
+  opacity: 0.65;  /* Réduit l'opacité pour effet "grisé" */
+}
+
+/* Contenu de la tâche (checkbox + texte) */
+.task-content {
+  display: flex;       /* Flexbox */
+  align-items: center; /* Alignement vertical */
+  gap: 12px;           /* Espace entre checkbox et texte */
+  flex: 1;             /* Prend l'espace disponible */
+}
+
+/* Checkbox de la tâche */
+.task-checkbox {
+  width: 18px;                 /* Largeur */
+  height: 18px;                /* Hauteur */
+  accent-color: var(--primary);  /* Couleur de la checkbox (moderne) */
+  cursor: pointer;             /* Curseur en main */
+}
+
+/* Texte de la tâche */
+.task-text {
+  font-size: 15px;    /* Taille du texte */
+  line-height: 1.4;   /* Hauteur de ligne pour meilleure lisibilité */
+}
+
+/* Bouton de suppression */
+.delete-btn {
+  border: none;                /* Pas de bordure */
+  background: var(--danger);   /* Fond rouge */
+  color: #fff;                 /* Texte blanc */
+  border-radius: 6px;          /* Coins arrondis */
+  padding: 8px 10px;           /* Espacement intérieur */
+  cursor: pointer;             /* Curseur en main */
+  transition: opacity 0.2s ease;  /* Transition de l'opacité */
+}
+
+/* Effet au survol du bouton supprimer */
+.delete-btn:hover {
+  opacity: 0.8;  /* Légère transparence */
+}
+
+/* Message quand la liste est vide */
+.empty-state {
+  text-align: center;              /* Centré */
+  padding: 40px 0;                 /* Espacement vertical */
+  color: var(--muted);             /* Couleur grise */
+  border: 1px dashed var(--border);  /* Bordure en pointillés */
+  border-radius: 10px;             /* Coins arrondis */
+}
+
+/* ========================================
+   POMODORO TIMER
+   ======================================== */
+
+/* Conteneur principal du Pomodoro */
+.pomodoro-container {
+  display: grid;  /* Layout en grille */
+  gap: 24px;      /* Espace entre les éléments */
+}
+
+/* Zone d'affichage du timer */
+.timer-display {
+  display: flex;           /* Flexbox */
+  justify-content: center; /* Centré horizontalement */
+}
+
+/* Cercle du timer */
+.timer-circle {
+  width: 260px;   /* Largeur */
+  height: 260px;  /* Hauteur */
+  border-radius: 70%;  /* Forme circulaire */
+  display: grid;       /* Grid pour centrer le contenu */
+  place-items: center; /* Centre parfaitement le contenu */
+  position: relative;  /* Pour positionner le SVG */
+}
+
+/* SVG du cercle de progression */
+.progress-ring {
+  position: absolute;  /* Positionné par rapport au cercle */
+  inset: 0;            /* Couvre tout le cercle */
+}
+
+/* Cercle de fond (gris) */
+.progress-ring-bg {
+  fill: none;          /* Pas de remplissage */
+  stroke: #e6e9f4;     /* Couleur du trait (gris clair) */
+  stroke-width: 10;    /* Épaisseur du trait */
+}
+
+/* Cercle de progression (coloré) */
+.progress-ring-circle {
+  fill: none;                  /* Pas de remplissage */
+  stroke: url(#gradient);      /* Utilise le dégradé SVG défini dans le JS */
+  stroke-width: 10;            /* Épaisseur du trait */
+  stroke-linecap: round;       /* Extrémités arrondies */
+  transform: rotate(-90deg);   /* Commence en haut (au lieu de droite) */
+  transform-origin: 50% 50%;   /* Pivot au centre */
+  transition: stroke-dashoffset 0.25s linear;  /* Transition fluide du trait */
+}
+
+/* Texte du timer (MM:SS + mode) */
+.timer-text {
+  display: flex;           /* Flexbox */
+  flex-direction: column;  /* Colonne verticale */
+  align-items: center;     /* Centré */
+  gap: 6px;                /* Espace entre les lignes */
+  font-weight: 600;        /* Semi-gras */
+}
+
+/* Temps affiché (MM:SS) */
+.timer-text span:first-child {
+  font-size: 40px;  /* Grande taille */
+}
+
+/* Mode (Travail / Pause) */
+.timer-mode {
+  font-size: 14px;              /* Petite taille */
+  color: var(--muted);          /* Couleur grise */
+  text-transform: uppercase;    /* Majuscules */
+  letter-spacing: 0.08em;       /* Espacement des lettres */
+}
+
+/* Contrôles du timer (boutons Start/Pause/Reset) et presets */
+.timer-controls,
+.timer-presets {
+  display: flex;           /* Flexbox */
+  gap: 12px;               /* Espace entre les boutons */
+  flex-wrap: wrap;         /* Passage à la ligne si nécessaire */
+  justify-content: center; /* Centré */
+}
+
+/* Boutons du timer et presets */
+.timer-btn,
+.preset-btn {
+  border-radius: 8px;              /* Coins arrondis */
+  border: 1px solid var(--border); /* Bordure grise */
+  background: #fff;                /* Fond blanc */
+  padding: 12px 18px;              /* Espacement intérieur */
+  font-weight: 600;                /* Semi-gras */
+  cursor: pointer;                 /* Curseur en main */
+  transition: all 0.2s ease;       /* Transitions fluides */
+}
+
+/* Bouton principal (Start) */
+.timer-btn.primary {
+  background: var(--primary);      /* Fond bleu */
+  border-color: var(--primary);    /* Bordure bleue */
+  color: #fff;                     /* Texte blanc */
+}
+
+/* Bouton désactivé */
+.timer-btn:disabled {
+  opacity: 0.5;            /* Transparence */
+  cursor: not-allowed;     /* Curseur "interdit" */
+}
+
+/* Preset actif */
+.preset-btn.active {
+  background: var(--primary-soft);  /* Fond bleu clair */
+  border-color: transparent;        /* Pas de bordure */
+  color: var(--primary);            /* Texte bleu */
+}
+
+/* Compteur de sessions */
+.session-counter {
+  text-align: center;      /* Centré */
+  font-size: 14px;         /* Petite taille */
+  color: var(--muted);     /* Couleur grise */
+}
+
+/* ========================================
+   CALCULATRICE
+   ======================================== */
+
+/* Conteneur de la calculatrice */
+.calc-container {
+  max-width: 520px;  /* Largeur maximale */
+}
+
+/* Corps de la calculatrice */
+.calculator {
+  border: 1px solid var(--border);  /* Bordure grise */
+  border-radius: 14px;              /* Coins arrondis */
+  padding: 24px;                    /* Espacement intérieur */
+  background: #fdfdff;              /* Fond blanc légèrement teinté */
+}
+
+/* Écran d'affichage de la calculatrice */
+.calc-display {
+  background: #0a1021;         /* Fond noir/bleu foncé */
+  color: #f4f6ff;              /* Texte blanc/bleu clair */
+  border-radius: 10px;         /* Coins arrondis */
+  padding: 22px;               /* Espacement intérieur */
+  text-align: right;           /* Aligné à droite */
+  min-height: 110px;           /* Hauteur minimale */
+  display: flex;               /* Flexbox */
+  flex-direction: column;      /* Colonne verticale */
+  justify-content: center;     /* Centré verticalement */
+  gap: 8px;                    /* Espace entre les lignes */
+  margin-bottom: 18px;         /* Marge en dessous */
+}
+
+/* Ligne précédente (opération en cours) */
+.calc-previous {
+  font-size: 15px;       /* Petite taille */
+  color: #7e86a5;        /* Couleur grise */
+}
+
+/* Ligne actuelle (valeur affichée) */
+.calc-current {
+  font-size: 34px;           /* Grande taille */
+  font-weight: 600;          /* Semi-gras */
+  letter-spacing: 0.03em;    /* Espacement des caractères */
+}
+
+/* Grille des boutons */
+.calc-buttons {
+  display: grid;                                   /* Grid layout */
+  grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 colonnes égales */
+  gap: 12px;                                       /* Espace entre les boutons */
+}
+
+/* Bouton de calculatrice */
+.calc-btn {
+  border: none;                        /* Pas de bordure par défaut */
+  border-radius: 10px;                 /* Coins arrondis */
+  padding: 16px;                       /* Espacement intérieur */
+  font-size: 16px;                     /* Taille du texte */
+  font-weight: 600;                    /* Semi-gras */
+  cursor: pointer;                     /* Curseur en main */
+  background: #fff;                    /* Fond blanc */
+  border: 1px solid var(--border);     /* Bordure grise */
+  transition: transform 0.15s ease, box-shadow 0.15s ease;  /* Transitions */
+}
+
+/* Effet au clic */
+.calc-btn:active {
+  transform: scale(0.98);  /* Légère réduction */
+}
+
+/* Boutons opérateurs (+, -, ×, ÷) */
+.calc-btn.operator {
+  background: #eef0ff;         /* Fond bleu clair */
+  color: var(--primary);       /* Texte bleu */
+  border-color: transparent;   /* Pas de bordure */
+}
+
+/* Boutons fonction (C, ⌫, %) */
+.calc-btn.function {
+  background: #f5f7fb;  /* Fond gris clair */
+}
+
+/* Bouton égal (=) */
+.calc-btn.equals {
+  background: var(--accent);   /* Fond cyan */
+  color: #fff;                 /* Texte blanc */
+  border-color: transparent;   /* Pas de bordure */
+}
+
+/* Bouton qui prend 2 colonnes (le 0) */
+.span-2 {
+  grid-column: span 2;  /* Occupe 2 colonnes */
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+/* Animation d'apparition en fondu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;                   /* Commence invisible */
+    transform: translateY(10px);  /* Décalé vers le bas */
+  }
+  to {
+    opacity: 1;                   /* Devient visible */
+    transform: translateY(0);     /* Position normale */
+  }
+}
+
+/* Animation du dégradé de fond */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;    /* Position de départ */
+  }
+  50% {
+    background-position: 100% 50%;  /* Position milieu */
+  }
+  100% {
+    background-position: 0% 50%;    /* Retour au départ (boucle) */
+  }
+}
+
+/* Animation de pulsation */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;           /* Opacité faible */
+    transform: scale(1);    /* Taille normale */
+  }
+  50% {
+    opacity: 1;             /* Opacité maximale */
+    transform: scale(1.05); /* Légèrement agrandi */
+  }
+  100% {
+    opacity: 0.6;           /* Retour opacité faible */
+    transform: scale(1);    /* Retour taille normale */
+  }
+}
+
+/* ========================================
+   RESPONSIVE (TABLETTES)
+   ======================================== */
+/* Adaptations pour écrans moyens (max 768px) */
+@media (max-width: 768px) {
+  body {
+    padding: 20px 12px;  /* Padding réduit */
+  }
+
+  .main-container {
+    padding: 20px;  /* Réduction du padding */
+  }
+
+  .container {
+    padding: 24px;  /* Réduction du padding */
+  }
+
+  header h1 {
+    font-size: 24px;  /* Titre plus petit */
+  }
+
+  .subtitle {
+    font-size: 13px;  /* Sous-titre plus petit */
+  }
+
+  .tab-navigation {
+    gap: 8px;  /* Espacement réduit */
+  }
+
+  .tab-btn {
+    padding: 12px 10px;  /* Padding réduit */
+    font-size: 14px;  /* Texte plus petit */
+  }
+
+  .input-section {
+    flex-direction: column;  /* Input et bouton en colonne */
+    gap: 10px;  /* Espacement réduit */
+  }
+
+  #taskInput {
+    font-size: 14px;  /* Texte plus petit */
+    padding: 12px 14px;  /* Padding réduit */
+  }
+
+  .add-btn {
+    justify-content: center;  /* Bouton centré */
+    width: 100%;  /* Pleine largeur */
+    padding: 14px;  /* Padding ajusté */
+    font-size: 14px;  /* Texte plus petit */
+  }
+
+  .task-item {
+    padding: 12px 14px;  /* Padding réduit */
+    font-size: 14px;  /* Texte plus petit */
+  }
+
+  .delete-btn {
+    padding: 6px 8px;  /* Padding réduit */
+    font-size: 13px;  /* Texte plus petit */
+  }
+
+  .timer-circle {
+    width: 200px;  /* Cercle plus petit */
+    height: 200px;  /* Cercle plus petit */
+  }
+
+  .timer-text span:first-child {
+    font-size: 36px;  /* Timer plus petit */
+  }
+
+  .timer-mode {
+    font-size: 13px;  /* Mode plus petit */
+  }
+
+  .timer-btn,
+  .preset-btn {
+    padding: 10px 14px;  /* Padding réduit */
+    font-size: 14px;  /* Texte plus petit */
+  }
+
+  .timer-controls,
+  .timer-presets {
+    gap: 10px;  /* Espacement réduit */
+  }
+
+  .calc-display {
+    padding: 18px;  /* Padding réduit */
+    min-height: 100px;  /* Hauteur réduite */
+  }
+
+  .calc-current {
+    font-size: 30px;  /* Chiffres plus petits */
+  }
+
+  .calc-previous {
+    font-size: 14px;  /* Opération plus petite */
+  }
+
+  .calc-buttons {
+    gap: 10px;  /* Espacement réduit */
+  }
+
+  .calc-btn {
+    padding: 14px;  /* Padding réduit */
+    font-size: 15px;  /* Texte plus petit */
+  }
+}
+
+/* ========================================
+   RESPONSIVE (MOBILES)
+   ======================================== */
+/* Adaptations pour petits écrans (max 480px) */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 10px;  /* Padding minimal */
+  }
+
+  .main-container {
+    padding: 16px;  /* Padding minimal */
+  }
+
+  .container {
+    padding: 20px;  /* Padding minimal */
+  }
+
+  header h1 {
+    font-size: 22px;  /* Titre encore plus petit */
+  }
+
+  .subtitle {
+    font-size: 12px;  /* Sous-titre encore plus petit */
+  }
+
+  .tab-navigation {
+    grid-template-columns: 1fr;  /* Onglets en colonne unique */
+    gap: 6px;  /* Espacement minimal */
+  }
+
+  .tab-btn {
+    padding: 10px;  /* Padding minimal */
+    font-size: 13px;  /* Texte plus petit */
+  }
+
+  #taskInput {
+    font-size: 14px;  /* Texte standard mobile */
+    padding: 11px 13px;  /* Padding réduit */
+  }
+
+  .add-btn {
+    padding: 12px;  /* Padding réduit */
+    font-size: 14px;  /* Texte standard */
+  }
+
+  .task-item {
+    padding: 11px 13px;  /* Padding minimal */
+    font-size: 14px;  /* Texte standard */
+    flex-direction: column;  /* Colonne pour plus d'espace */
+    align-items: flex-start;  /* Alignement à gauche */
+  }
+
+  .task-content {
+    width: 100%;  /* Pleine largeur */
+  }
+
+  .delete-btn {
+    width: 100%;  /* Pleine largeur */
+    padding: 8px;  /* Padding ajusté */
+    font-size: 13px;  /* Texte plus petit */
+  }
+
+  .timer-circle {
+    width:
